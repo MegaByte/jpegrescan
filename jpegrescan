@@ -4,6 +4,7 @@
 
 use File::Slurp;
 use File::Temp qw/ tempfile /;
+use File::Copy;
 require threads if $t;
 
 @ARGV==2 or die "usage: jpegrescan in.jpg out.jpg
@@ -20,7 +21,7 @@ switches:
 $fin = $ARGV[0];
 $fout = $ARGV[1];
 (undef, $ftmp) = tempfile(SUFFIX => ".scan");
-$jtmp = $fout;
+(undef, $jtmp) = tempfile(SUFFIX => ".jpg");
 $verbose = $v;
 $quiet = $q;
 if($t) {
@@ -211,6 +212,8 @@ $old_size = -s $fin;
 !$quiet && printf "%+.2f%%\n", ($size/$old_size-1)*100;
 if($size <= $old_size) {
     write_file($fout, $data);
+} elsif($fin ne $fout) {
+    copy($fin, $fout);
 }
 unlink $ftmp;
 for(my $i=0; $i <= $maxtries; $i++) {
