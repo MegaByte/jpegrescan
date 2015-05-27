@@ -14,6 +14,7 @@ JPEGrescan is a perl script that uses jpeg tools to optimize jpeg compression by
 * -a: Turns on arithmetic coding. (Unsupported by most software.)  
 * -v: verbose output
 * -q: supress all output
+* -m: use mozjpeg version of jpegtran (assuming installed as `mozjpeg`)
 
 ##Issues 
 * No out.jpg - Install the below packages to solve this issue

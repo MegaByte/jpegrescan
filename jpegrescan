@@ -182,20 +182,20 @@ if($rgb) {
 # FIXME: penalize lots of refinement passes because it's slower to decode. if so, then also force overwrite if bigger than the input.
 sub try_splits {
     my $str = shift;
-    my %n = map {$_ => sprintf "$c: 1 %d $str; $c: %d 63 $str;", $_, $_+1} 2,5,8,12,18;
-    my $mode = &$triesn(3, "$c: 1 63 $str;", @n{2,8,5});
-    return $mode if $mode ne $n{8};
-    return &$triesn(2, $mode, @n{12,18});
+    my %n = map {$_ => sprintf "$c: 1 %d $str; $c: %d 63 $str;", $_, $_+1} 1..62;
+    return &$triesn(62, "$c: 1 63 $str;", @n{1..62});
 }
 
 foreach $c (0..$rgb) {
     my @modes;
-    my $ml = "";
-    for(0..($c?2:3)) {
-        push @modes, "$c: 1 8 0 $_; $c: 9 63 0 $_;".$ml;
-        $ml .= sprintf("$c: 1 63 %d %d;", $_+1, $_);
+    for $co (1..62) {
+        my $ml = "";
+        for(0..($c?2:3)) {
+            push @modes, "$c: 1 $co 0 $_; $c: ${\($co+1)} 63 0 $_;".$ml;
+            $ml .= sprintf("$c: 1 63 %d %d;", $_+1, $_);
+        }
     }
-    my $refine = &$triesn(1, @modes);
+    my $refine = &$triesn($#modes, @modes);
     $refine =~ s/.* (0 \d);//;
     $ac .= $refine . try_splits($1);
 }
