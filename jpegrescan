@@ -12,6 +12,8 @@ tries various progressive scan orders
 switches:
   -s strip from all extra markers (`jpegtran -copy none` otherwise `jpegtran -copy all`)
   -i allow optimizations that may be incompatible with some software (implies -s)
+  -j strip JFIF segment for 18-byte savings (generates non-compliant JPEG that may be
+     incompatible with some software)
   -t use multiple threads (usually 3.)  Faster, but not 3x faster.
   -v verbose output
   -q supress all output
@@ -31,10 +33,11 @@ if($t) {
 }
 $incompatible = $i;
 $dostrip = $s || $i;
+$jfif = $j;
 @strip = $dostrip ? ("-copy","none") : ("-copy","all");
 @arith = $a ? ("-arithmetic") : ();
 $jpegtran = $m ? "mozjpeg" : "jpegtran";
-undef $_ for $v,$q,$t,$s,$i,$a,$m;
+undef $_ for $v,$q,$t,$s,$i,$a,$m,$j;
 undef $/;
 $|=1;
 
@@ -51,7 +54,7 @@ open STDERR, ">&", $OLDERR;
 # So this gets rid of all existing JFIF segments.
 # And jpegtran will insert a minimal (18-byte) JFIF segment.
 # (Which -o will remove again if requested!)
-$data = jfifremove($data) if($dostrip);
+$data = jfifremove($data) if($jfif);
 write_file($jtmp, $data);
 undef $data;
 
@@ -73,7 +76,7 @@ sub jfifremove {
       return $file;
     }
   }
-  !$quiet && print $verbose ? "Removed ".(length($_[0])-length($file)-($incompatible?0:18))." jfif bytes.\n".length($file)."\n\n" : ".";
+  !$quiet && print $verbose ? "Removed ".(length($_[0])-length($file)-($jfif?0:18))." jfif bytes.\n".length($file)."\n\n" : ".";
   return $file;
 }
 
@@ -205,7 +208,7 @@ $prefix = "";
 undef %memo;
 $mode = canonize($dc.$ac);
 try($mode);
-$data = jfifremove($data) if($incompatible);
+$data = jfifremove($data) if($jfif);
 $size = length $data;
 !$quiet && print "\n$mode\n$size\n";
 $old_size = -s $fin;
