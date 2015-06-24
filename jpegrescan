@@ -163,7 +163,7 @@ if($rgb) {
     # 012 helps very little
     # 0/12 and 0/1/2 are pretty evenly matched in frequency, but 0/12 wins in total size if every image had to use the same mode
     # dc refinement passes never help
-    my @tries = ("0: 0 0 0 0; 1: 0 0 0 0; 2: 0 0 0 0;");
+    my @tries = ("0 1 2: 0 0 0 0;", "0: 0 0 0 0; 1: 0 0 0 0; 2: 0 0 0 0;");
     # two scans expose a bug in Opera <= 11.61
     unshift(@tries, "0: 0 0 0 0; 1 2: 0 0 0 0;") if $incompatible;
     $dc = tries(@tries);
@@ -179,7 +179,7 @@ if($rgb) {
 # refinement passes have some chance of being split (luma: 4%,4%,4%. chroma: 20%,8%) but the total bit gain is negligible.
 # msb pass should almost always be split (luma: 87%, chroma: 81%).
 # I have no theoretical reason for this list of split positions, they're just the most common in practice.
-# splitting into 3 ections is often slightly better, but the total number of bits saved is negligible.
+# splitting into 3 sections is often slightly better, but the total number of bits saved is negligible.
 # FIXME: penalize lots of refinement passes because it's slower to decode. if so, then also force overwrite if bigger than the input.
 sub try_splits {
     my $str = shift;
