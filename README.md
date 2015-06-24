@@ -9,12 +9,13 @@ JPEGrescan is a perl script that uses jpeg tools to optimize jpeg compression by
 ### Arguments
 
 * -s: Removes all Exif data and now all JFIF data as well.  (A basic 18-byte JFIF segment is added in its place.)
-* -i: Allows optimizations that may be "incompatible" with some software.  Currently this means removing *all* JFIF data (saving 18 bytes) and allowing an encoding not supported by Opera before version 11.61.
+* -i: Allows optimizations that may be "incompatible" with some software.  Currently, this means allowing an encoding not supported by Opera before version 11.61 and Photoshop.
+* -j: Completely strip JFIF segment for 18-byte savings.  This generates a non-compliant JPEG that may be incompatible with some software.
 * -t: Turns on multithreaded operation.  Usually, uses up to 4 threads.  Faster, but not four times faster than without -t.  So try xargs -n1 -P to shrink a large number of jpegs at the same time.
-* -a: Turns on arithmetic coding. (Unsupported by most software.)  
-* -v: verbose output
-* -q: supress all output
-* -m: use mozjpeg version of jpegtran (assuming installed as `mozjpeg`)
+* -a: Turns on arithmetic coding.  (Unsupported by most software.)  
+* -v: Verbose output.
+* -q: Suppress all output.
+* -m: Use mozjpeg version of jpegtran.  (Assuming installed as `mozjpeg`)
 
 ##Issues 
 * No out.jpg - Install the below packages to solve this issue
