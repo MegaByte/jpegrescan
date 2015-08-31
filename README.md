@@ -19,7 +19,8 @@ JPEGrescan is a perl script that uses jpeg tools to optimize jpeg compression by
 
 ##Issues 
 * No out.jpg - Install the below packages to solve this issue
-  yum -y install perl-File-Slurp libjpeg-turbo-utils 
+  Fedora: yum -y install perl-File-Slurp libjpeg-turbo-utils 
+  Debian: aptitude install -y libfile-slurp-perl libjpeg-turbo-progs
 
 ## Thanks
 
