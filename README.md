@@ -2,6 +2,8 @@
 
 JPEGrescan is a perl script that uses jpeg tools to optimize jpeg compression by micro-managing some of the compression math based on research into some of the most common parameters.
 
+NB: Use [jpegultrascan](https://github.com/MegaByte/jpegultrascan) instead for additional size savings.
+
 ## Usage
 
 ```$ jpegrescan in.jpg out.jpg ```
